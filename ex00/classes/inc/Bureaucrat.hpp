@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Bureaucrat.hpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/10 20:56:26 by isojo-go          #+#    #+#             */
+/*   Updated: 2023/06/10 20:59:28 by isojo-go         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef BUREAUCRAT_HPP
 	#define BUREAUCRAT_HPP
 
@@ -52,6 +64,7 @@
 			int					_grade;
 	};
 
+	// Stream operator overload to print Bureaucrat Class instances:
 	std::ostream&	operator<<(std::ostream& os, const Bureaucrat& obj);
 
 #endif // BUREAUCRAT_HPP

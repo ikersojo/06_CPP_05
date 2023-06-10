@@ -1,4 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   Bureaucrat.cpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/10 20:56:22 by isojo-go          #+#    #+#             */
+/*   Updated: 2023/06/10 20:59:28 by isojo-go         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/Bureaucrat.hpp"
+
+// Constructors:
+/* ************************************************************************** */
 
 Bureaucrat::Bureaucrat(void) : _name("un-named"), _grade(MIN_GRADE)
 {
@@ -23,12 +38,18 @@ Bureaucrat::Bureaucrat(const Bureaucrat& obj)
 	*this = obj;
 }
 
+// Destructor:
+/* ************************************************************************** */
+
 Bureaucrat::~Bureaucrat(void)
 {
 	if (DEBUG == 1)
 		std::cout << "\033[0;93m" << "Default Destructor called"
 					<< "\033[0;39m" << std::endl;
 }
+
+// Operator Override:
+/* ************************************************************************** */
 
 Bureaucrat&	Bureaucrat::operator=(const Bureaucrat& rhs)
 {
@@ -39,6 +60,9 @@ Bureaucrat&	Bureaucrat::operator=(const Bureaucrat& rhs)
 	}
 	return (*this);
 }
+
+// Member functions:
+/* ************************************************************************** */
 
 const std::string&	Bureaucrat::getName(void) const
 {
@@ -61,6 +85,9 @@ void	Bureaucrat::decrementGrade(void)
 	this->_grade++;
 	Bureaucrat::checkGrade();
 }
+
+// Exceptions:
+/* ************************************************************************** */
 
 const char* Bureaucrat::GradeTooHighException::what() const throw()
 {
@@ -96,6 +123,9 @@ void	Bureaucrat::checkGrade(void)
 		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
 	}
 }
+
+// Stream operator overload to print Bureaucrat Class instances:
+/* ************************************************************************** */
 
 std::ostream&	operator<<(std::ostream& os, const Bureaucrat& obj)
 {
