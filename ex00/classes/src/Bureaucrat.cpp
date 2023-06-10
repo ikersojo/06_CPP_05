@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 20:56:22 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/06/10 20:59:28 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/06/10 21:10:21 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -129,6 +129,6 @@ void	Bureaucrat::checkGrade(void)
 
 std::ostream&	operator<<(std::ostream& os, const Bureaucrat& obj)
 {
-	os << obj.getName() << ", bureaucrat grade " << obj.getGrade() << "." << std::endl;
+	os << obj.getName() << " (bureaucrat grade " << obj.getGrade() << ")";
 	return (os);
 }
