@@ -1,0 +1,104 @@
+#include "../inc/Bureaucrat.hpp"
+
+Bureaucrat::Bureaucrat(void) : _name("un-named"), _grade(MIN_GRADE)
+{
+	if (DEBUG == 1)
+		std::cout << "\033[0;93m" << "Default Constructor called (" << this->getName()
+					<< ")." << "\033[0;39m" << std::endl;
+}
+
+Bureaucrat::Bureaucrat(const std::string name, const int grade) : _name(name), _grade(grade)
+{
+	if (DEBUG == 1)
+		std::cout << "\033[0;93m" << "Nanmed Constructor called (" << this->getName()
+					<< ")." << "\033[0;39m" << std::endl;
+	Bureaucrat::checkGrade();
+}
+
+Bureaucrat::Bureaucrat(const Bureaucrat& obj)
+{
+	if (DEBUG == 1)
+		std::cout << "\033[0;93m" << "Copy Constructor called (" << obj.getName()
+					<< ")." << "\033[0;39m" << std::endl;
+	*this = obj;
+}
+
+Bureaucrat::~Bureaucrat(void)
+{
+	if (DEBUG == 1)
+		std::cout << "\033[0;93m" << "Default Destructor called"
+					<< "\033[0;39m" << std::endl;
+}
+
+Bureaucrat&	Bureaucrat::operator=(const Bureaucrat& rhs)
+{
+	if (this != &rhs)
+	{
+		this->~Bureaucrat();
+		new(this) Bureaucrat(rhs.getName(), rhs.getGrade());
+	}
+	return (*this);
+}
+
+const std::string&	Bureaucrat::getName(void) const
+{
+	return (this->_name);
+}
+
+int	Bureaucrat::getGrade(void) const
+{
+	return (this->_grade);
+}
+
+void	Bureaucrat::incrementGrade(void)
+{
+	this->_grade--;
+	Bureaucrat::checkGrade();
+}
+
+void	Bureaucrat::decrementGrade(void)
+{
+	this->_grade++;
+	Bureaucrat::checkGrade();
+}
+
+const char* Bureaucrat::GradeTooHighException::what() const throw()
+{
+	return ("The grade is too high! Defaulting to Grade 1.");
+}
+
+const char* Bureaucrat::GradeTooLowException::what() const throw()
+{
+	return ("The grade is too low! Defaulting to Grade 150.");
+}
+
+void	Bureaucrat::checkGrade(void)
+{
+	try
+	{
+		if (this->_grade < MAX_GRADE)
+			throw GradeTooHighException();
+		else if (this->_grade > MIN_GRADE)
+			throw GradeTooLowException();
+	}
+	catch (const GradeTooHighException& e)
+	{
+		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
+		this->_grade = MAX_GRADE;
+	}
+	catch (const GradeTooLowException& e)
+	{
+		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
+		this->_grade = MIN_GRADE;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
+	}
+}
+
+std::ostream&	operator<<(std::ostream& os, const Bureaucrat& obj)
+{
+	os << obj.getName() << ", bureaucrat grade " << obj.getGrade() << "." << std::endl;
+	return (os);
+}
