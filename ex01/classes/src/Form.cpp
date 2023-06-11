@@ -15,12 +15,9 @@ Form::Form(const std::string name, const int reqGradeForSign, const int reqGrade
 			_name(name), _signed(false), _reqGradeForSign(reqGradeForSign), _reqGradeForExec(reqGradeForExec)
 {
 	if (DEBUG == 1)
-		std::cout << "\033[0;93m" << "Nanmed Form Constructor called (" << this->getName()
+		std::cout << "\033[0;93m" << "Named Form Constructor called (" << this->getName()
 					<< ")." << "\033[0;39m" << std::endl;
-	if (Form::checkGradeOK(reqGradeForSign))
-	{
-		this->~Form();
-	}
+	Form::checkGrade();
 }
 
 Form::Form(const Form& obj) : _name(obj.getName()), _signed(false), _reqGradeForSign(obj.getReqGradeForSign()),
@@ -38,8 +35,8 @@ Form::Form(const Form& obj) : _name(obj.getName()), _signed(false), _reqGradeFor
 Form::~Form(void)
 {
 	if (DEBUG == 1)
-		std::cout << "\033[0;93m" << "Default Form Destructor called"
-					<< "\033[0;39m" << std::endl;
+		std::cout << "\033[0;93m" << "Default Form Destructor called (" << this->getName()
+					<< ")." << "\033[0;39m" << std::endl;
 }
 
 // Operator Override:
@@ -83,7 +80,7 @@ void	Form::beSigned(const Bureaucrat& bureaucrat)
 {
 	if (this->getSignatureStatus() == false)
 	{
-		if (bureaucrat.getGrade() >= this->getReqGradeForSign())
+		if (bureaucrat.getGrade() <= this->getReqGradeForSign())
 		{
 			this->_signed = true;
 		}
@@ -103,16 +100,43 @@ const char* Form::GradeTooLowException::what() const throw()
 	return ("The grade is too low!");
 }
 
-bool	Form::checkGradeOK(int grade)
+void	Form::checkGrade(void)
 {
+	std::string	tempName = this->getName();
+	bool		tempSignedStatus = this->getSignatureStatus();
+	int			tempGradeSign = this->getReqGradeForSign();
+	int			tempGradeExec = this->getReqGradeForExec();
+
 	try
 	{
-		if (grade < MAX_GRADE)
+		if (this->getReqGradeForSign() < MAX_GRADE)
+		{
+			this->~Form();
+			new(this) Form(tempName, 1, tempGradeExec);
+			this->_signed = tempSignedStatus;
 			throw GradeTooHighException();
-		else if (grade > MIN_GRADE)
+		}
+		else if (this->getReqGradeForSign() > MIN_GRADE)
+		{
+			this->~Form();
+			new(this) Form(tempName, 150, tempGradeExec);
+			this->_signed = tempSignedStatus;
 			throw GradeTooLowException();
-		else
-			return (true);
+		}
+		if (this->getReqGradeForExec() < MAX_GRADE)
+		{
+			this->~Form();
+			new(this) Form(tempName, tempGradeSign, 1);
+			this->_signed = tempSignedStatus;
+			throw GradeTooHighException();
+		}
+		else if (this->getReqGradeForExec() > MIN_GRADE)
+		{
+			this->~Form();
+			new(this) Form(tempName, tempGradeSign, 150);
+			this->_signed = tempSignedStatus;
+			throw GradeTooLowException();
+		}
 	}
 	catch (const GradeTooHighException& e)
 	{
@@ -126,7 +150,6 @@ bool	Form::checkGradeOK(int grade)
 	{
 		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
 	}
-	return (false);
 }
 
 // Stream operator overload to print Form Class instances:
@@ -134,6 +157,12 @@ bool	Form::checkGradeOK(int grade)
 
 std::ostream&	operator<<(std::ostream& os, const Form& obj)
 {
-	os << obj.getName() << " (Form grade " << obj.getReqGradeForSign() << ")";
+	os << "Form "<< obj.getName() << " (signed [";
+	if (obj.getSignatureStatus())
+		os << "yes";
+	else
+		os << "no";
+	os << "] - reqSign: " << obj.getReqGradeForSign() << " - reqExec: "
+		<< obj.getReqGradeForExec() << ")";
 	return (os);
 }

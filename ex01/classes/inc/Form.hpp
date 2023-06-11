@@ -36,7 +36,7 @@
 
 		private:
 			// Exceptions:
-			bool	checkGradeOK(int grade);
+			void	checkGrade(void);
 			class GradeTooHighException : public std::exception
 			{
 				public:

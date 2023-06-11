@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 20:56:13 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/06/11 10:58:27 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/06/11 12:42:07 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,52 +21,51 @@ static void	printBlueLine(std::string str)
 int main(void)
 {
 	printBlueLine("-------------------- construction checks -------------------------");
-	Bureaucrat	b1("iker", 3);
-	Bureaucrat	b2;
-	Bureaucrat	b3 = b1;
-	Bureaucrat	b4(b1);
+	Form	f1("papeleo1", 3, 5);
+	Form	f2;
+	Form	f3 = f1;
+	Form	f4(f1);
 
-	printBlueLine("-------------------- pointer to Bureaucrat -------------------------");
-	Bureaucrat*	ptr_b;
-	ptr_b = new Bureaucrat("laura", 1);
+	printBlueLine("-------------------- pointer to Form -------------------------");
+	Form*	ptr_f;
+	ptr_f = new Form("directiva2", 23, 48);
 
 	printBlueLine("------------------ out of range construction check ---------------------------");
-	Bureaucrat	b5("pepe", 203);
-	Bureaucrat	b6("popi", 0);
-	std::cout << b5 << std::endl;
-	std::cout << b6 << std::endl;
+	Form	f5("grande", 203, 12);
+	Form	f6("pequeño", 0, 12);
+	Form	f7("grande2", 1, 433);
+	Form	f8("pequeño2", 1, 0);
+	std::cout << f5 << std::endl;
+	std::cout << f6 << std::endl;
+	std::cout << f7 << std::endl;
+	std::cout << f8 << std::endl;
 
-	printBlueLine("--------------------- increment check ------------------------");
+	printBlueLine("--------------------- signature check ------------------------");
+	Bureaucrat b1("iker", 5);
 	std::cout << b1 << std::endl;
-	b1.incrementGrade();
-	b1.incrementGrade();
-	b1.incrementGrade();
-	b1.incrementGrade();
-	std::cout << b1 << std::endl;
 
-	printBlueLine("--------------------- decrement check ------------------------");
-	std::cout << b2 << std::endl;
-	b2.decrementGrade();
-	b2.decrementGrade();
-	std::cout << b2 << std::endl;
+	printBlueLine("------");
+	std::cout << f1 << std::endl;
+	b1.signForm(f1);
+	std::cout << f1 << std::endl;
 
-	printBlueLine("---------------------- decrement / increment check on pointer -----------------------");
-	std::cout << *ptr_b << std::endl;
-	ptr_b->decrementGrade();
-	ptr_b->decrementGrade();
-	std::cout << *ptr_b << std::endl;
-	ptr_b->incrementGrade();
-	ptr_b->incrementGrade();
-	ptr_b->incrementGrade();
-	std::cout << *ptr_b << std::endl;
+	printBlueLine("------");
+	std::cout << f5 << std::endl;
+	b1.signForm(f5);
+	std::cout << f5 << std::endl;
+
+	printBlueLine("------");
+	std::cout << f7 << std::endl;
+	b1.signForm(f7);
+	std::cout << f7 << std::endl;
 
 	printBlueLine("------------------ copy checks ---------------------------");
 	printBlueLine("Copied instances maintaining intial values (deep copy):");
-	std::cout << b3 << std::endl;
-	std::cout << b4 << std::endl;
+	std::cout << f3 << std::endl;
+	std::cout << f4 << std::endl;
 
 	printBlueLine("---------------------- delete pointer -----------------------");
-	delete ptr_b;
+	delete ptr_f;
 	printBlueLine("------------------- end of main --------------------------");
 	return (0);
 }

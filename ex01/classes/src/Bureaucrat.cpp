@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 20:56:22 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/06/11 11:04:30 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/06/11 12:40:08 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,14 @@
 Bureaucrat::Bureaucrat(void) : _name("un-named"), _grade(MIN_GRADE)
 {
 	if (DEBUG == 1)
-		std::cout << "\033[0;93m" << "Default Constructor called (" << this->getName()
+		std::cout << "\033[0;93m" << "Default Bureaucrat Constructor called (" << this->getName()
 					<< ")." << "\033[0;39m" << std::endl;
 }
 
 Bureaucrat::Bureaucrat(const std::string name, const int grade) : _name(name), _grade(grade)
 {
 	if (DEBUG == 1)
-		std::cout << "\033[0;93m" << "Nanmed Constructor called (" << this->getName()
+		std::cout << "\033[0;93m" << "Named Bureaucrat Constructor called (" << this->getName()
 					<< ")." << "\033[0;39m" << std::endl;
 	Bureaucrat::checkGrade();
 }
@@ -33,7 +33,7 @@ Bureaucrat::Bureaucrat(const std::string name, const int grade) : _name(name), _
 Bureaucrat::Bureaucrat(const Bureaucrat& obj)
 {
 	if (DEBUG == 1)
-		std::cout << "\033[0;93m" << "Copy Constructor called (" << obj.getName()
+		std::cout << "\033[0;93m" << "Copy Bureaucrat Constructor called (" << obj.getName()
 					<< ")." << "\033[0;39m" << std::endl;
 	*this = obj;
 }
@@ -44,7 +44,7 @@ Bureaucrat::Bureaucrat(const Bureaucrat& obj)
 Bureaucrat::~Bureaucrat(void)
 {
 	if (DEBUG == 1)
-		std::cout << "\033[0;93m" << "Default Destructor called (" << this->getName()
+		std::cout << "\033[0;93m" << "Default Bureaucrat Destructor called (" << this->getName()
 					<< ")." << "\033[0;39m" << std::endl;
 }
 
@@ -92,7 +92,7 @@ void	Bureaucrat::signForm(Form& form)
 	{
 		if (form.getSignatureStatus() == false)
 		{
-			if (this->getGrade() >= form.getReqGradeForSign())
+			if (this->getGrade() <= form.getReqGradeForSign())
 			{
 				form.beSigned(*this);
 				std::cout << this->getName() << " signed " << form.getName() << std::endl;
@@ -100,13 +100,13 @@ void	Bureaucrat::signForm(Form& form)
 			else
 			{
 				std::cout << this->getName() << " coudn't sign " << form.getName()
-					<< " because it is already signed"<< std::endl;
+					<< " because it is above grade."<< std::endl;
 				throw GradeTooLowException();
 			}
 		}
 		else
 			std::cout << this->getName() << " coudn't sign " << form.getName()
-				<< " because it is already signed"<< std::endl;
+				<< " because it is already signed."<< std::endl;
 	}
 	catch (const GradeTooLowException& e)
 	{
