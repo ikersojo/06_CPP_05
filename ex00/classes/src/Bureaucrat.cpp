@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 20:56:22 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/06/10 21:10:21 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/06/11 11:04:26 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,8 +44,8 @@ Bureaucrat::Bureaucrat(const Bureaucrat& obj)
 Bureaucrat::~Bureaucrat(void)
 {
 	if (DEBUG == 1)
-		std::cout << "\033[0;93m" << "Default Destructor called"
-					<< "\033[0;39m" << std::endl;
+		std::cout << "\033[0;93m" << "Default Destructor called (" << this->getName()
+					<< ")." << "\033[0;39m" << std::endl;
 }
 
 // Operator Override:
