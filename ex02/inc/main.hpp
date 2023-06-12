@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 20:56:17 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/06/12 23:07:20 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/06/12 23:20:11 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,4 +22,11 @@
 	#include "../classes/inc/PresidentialPardonForm.hpp"
 	#include "../classes/inc/RobotomyRequestForm.hpp"
 	#include "../classes/inc/ShrubberyCreationForm.hpp"
+
+	int		test1(void);
+	int		test2(void);
+	int		test3(void);
+	void	printBlueLine(std::string str);
+	void	printRedLine(std::string str);
+
 #endif // MAIN_HPP
