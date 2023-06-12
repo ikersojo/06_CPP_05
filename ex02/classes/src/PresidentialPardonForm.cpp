@@ -1,9 +1,21 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   PresidentialPardonForm.cpp                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/06/12 19:37:43 by isojo-go          #+#    #+#             */
+/*   Updated: 2023/06/12 20:16:49 by isojo-go         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../inc/PresidentialPardonForm.hpp"
 
 // Constructors:
 /* ************************************************************************** */
 
-PresidentialPardonForm::PresidentialPardonForm(void) : AForm("PresidentialPardonForm", 25, 5)
+PresidentialPardonForm::PresidentialPardonForm(void) : AForm("PresidentialPardonForm", false,  25, 5)
 {
 	if (DEBUG == 1)
 		std::cout << "\033[0;93m" << "Default PresidentialPardonForm Constructor called (" << this->getName()
@@ -11,7 +23,7 @@ PresidentialPardonForm::PresidentialPardonForm(void) : AForm("PresidentialPardon
 	this->_target = "undefined target";
 }
 
-PresidentialPardonForm::PresidentialPardonForm(const std::string target) : AForm("PresidentialPardonForm", 25, 5)
+PresidentialPardonForm::PresidentialPardonForm(const std::string target) : AForm("PresidentialPardonForm", false, 25, 5)
 {
 	if (DEBUG == 1)
 		std::cout << "\033[0;93m" << "Named PresidentialPardonForm Constructor called (" << this->getName()
@@ -19,13 +31,11 @@ PresidentialPardonForm::PresidentialPardonForm(const std::string target) : AForm
 	this->_target = target;
 }
 
-PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm& obj) :
-	AForm(obj.getName(), obj.getReqGradeForSign(), obj.getReqGradeForExec()) // duda
+PresidentialPardonForm::PresidentialPardonForm(const PresidentialPardonForm& obj) : AForm("PresidentialPardonForm", false, 25, 5), _target(obj.getTarget())
 {
 	if (DEBUG == 1)
 		std::cout << "\033[0;93m" << "Copy PresidentialPardonForm Constructor called (" << obj.getName()
 					<< ")." << "\033[0;39m" << std::endl;
-	*this = obj;
 }
 
 // Destructor:
@@ -47,7 +57,7 @@ PresidentialPardonForm&	PresidentialPardonForm::operator=(const PresidentialPard
 	{
 		this->~PresidentialPardonForm();
 		new(this) PresidentialPardonForm(rhs.getTarget());
-		this->_signed = rhs.getSignatureStatus(); // modificar definicion de AForm para incluir el status de la signature para poder copiarlo? como lo firmo?
+		this->setSignatureStatus(rhs.getSignatureStatus());
 	}
 	return (*this);
 }
@@ -60,7 +70,8 @@ std::string	PresidentialPardonForm::getTarget(void) const
 	return (this->_target);
 }
 
-void	execute(Bureaucrat const & executor) const
+void	PresidentialPardonForm::execute(Bureaucrat const & executor) const
 {
-
+	if (this->checkExecute(executor) == true)
+		std::cout << "\033[0;96m" << "You have been pardoned by President Zaphod Beeblebrox." << "\033[0;39m" << std::endl;
 }

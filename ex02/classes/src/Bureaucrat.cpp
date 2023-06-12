@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 20:56:22 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/06/11 12:51:23 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/06/12 20:15:35 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,12 +116,42 @@ void	Bureaucrat::signForm(AForm& form)
 	{
 		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
 	}
-
 }
 
 void	Bureaucrat::executeForm(AForm const & form)
 {
-	do something...
+	try
+	{
+		if (form.getSignatureStatus() == true)
+		{
+			if (this->getGrade() <= form.getReqGradeForExec())
+			{
+				std::cout << this->getName() << " executed " << form.getName() << std::endl;
+				form.execute(*this);
+			}
+			else
+			{
+				std::cout << this->getName() << " coudn't execute " << form.getName()
+					<< " because it is above grade."<< std::endl;
+				throw GradeTooLowException();
+			}
+		}
+		else
+		{
+			std::cout << this->getName() << " coudn't execute " << form.getName()
+				<< " because it is not signed."<< std::endl;
+			form.execute(*this);
+		}
+	}
+	catch (const GradeTooLowException& e)
+	{
+		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
+	}
+
 }
 
 // Exceptions:

@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/10 20:56:13 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/06/11 12:54:12 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/06/12 20:08:29 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,47 +21,51 @@ static void	printBlueLine(std::string str)
 int main(void)
 {
 	printBlueLine("-------------------- construction checks -------------------------");
-	AForm	f1("papeleo1", 3, 5);
-	AForm	f2;
-	AForm	f3 = f1;
-	AForm	f4(f1);
+	PresidentialPardonForm	f1("iker");
+	PresidentialPardonForm	f2;
+	PresidentialPardonForm	f3 = f1;
+	PresidentialPardonForm	f4(f1);
 
 	printBlueLine("-------------------- pointer to AForm -------------------------");
-	AForm*	ptr_f;
-	ptr_f = new AForm("directiva2", 23, 48);
-
-	printBlueLine("------------------ out of range construction check ---------------------------");
-	AForm	f5("grande", 203, 12);
-	AForm	f6("pequeño", 0, 12);
-	AForm	f7("grande2", 1, 433);
-	AForm	f8("pequeño2", 1, 0);
-	std::cout << f5 << std::endl;
-	std::cout << f6 << std::endl;
-	std::cout << f7 << std::endl;
-	std::cout << f8 << std::endl;
+	PresidentialPardonForm*	ptr_f;
+	ptr_f = new PresidentialPardonForm("ramon");
 
 	printBlueLine("--------------------- signature check ------------------------");
-	Bureaucrat b1("iker", 5);
+	Bureaucrat b1("iker", 1);
 	std::cout << b1 << std::endl;
 
+	Bureaucrat b2("helene", 100);
+	std::cout << b2 << std::endl;
+
+	Bureaucrat b3("urko", 20);
+	std::cout << b3 << std::endl;
+
 	printBlueLine("------");
+	std::cout << f1 << std::endl;
+	b1.executeForm(f1);
 	std::cout << f1 << std::endl;
 	b1.signForm(f1);
 	std::cout << f1 << std::endl;
+	b1.executeForm(f1);
 
 	printBlueLine("------");
-	std::cout << f5 << std::endl;
-	b1.signForm(f5);
-	std::cout << f5 << std::endl;
+	std::cout << f2 << std::endl;
+	b2.executeForm(f2);
+	std::cout << f2 << std::endl;
+	b2.signForm(f2);
+	std::cout << f2 << std::endl;
+	b2.executeForm(f2);
 
 	printBlueLine("------");
-	std::cout << f7 << std::endl;
-	b1.signForm(f7);
-	std::cout << f7 << std::endl;
+	std::cout << f3 << std::endl;
+	b3.executeForm(f3);
+	std::cout << f3 << std::endl;
+	b3.signForm(f3);
+	std::cout << f3 << std::endl;
+	b3.executeForm(f3);
 
 	printBlueLine("------------------ copy checks ---------------------------");
 	printBlueLine("Copied instances maintaining intial values (deep copy):");
-	std::cout << f3 << std::endl;
 	std::cout << f4 << std::endl;
 
 	printBlueLine("---------------------- delete pointer -----------------------");

@@ -4,15 +4,15 @@
 // Constructors:
 /* ************************************************************************** */
 
-AForm::AForm(void) : _name("un-named"), _signed(false), _reqGradeForSign(MIN_GRADE), _reqGradeForExec(MIN_GRADE)
+AForm::AForm(void) : _name("un-named"), _signedStatus(false), _reqGradeForSign(MIN_GRADE), _reqGradeForExec(MIN_GRADE)
 {
 	if (DEBUG == 1)
 		std::cout << "\033[0;93m" << "Default AForm Constructor called (" << this->getName()
 					<< ")." << "\033[0;39m" << std::endl;
 }
 
-AForm::AForm(const std::string name, const int reqGradeForSign, const int reqGradeForExec) :
-			_name(name), _signed(false), _reqGradeForSign(reqGradeForSign), _reqGradeForExec(reqGradeForExec)
+AForm::AForm(const std::string name, bool signedStatus, const int reqGradeForSign, const int reqGradeForExec) :
+			_name(name), _signedStatus(signedStatus), _reqGradeForSign(reqGradeForSign), _reqGradeForExec(reqGradeForExec)
 {
 	if (DEBUG == 1)
 		std::cout << "\033[0;93m" << "Named AForm Constructor called (" << this->getName()
@@ -20,8 +20,8 @@ AForm::AForm(const std::string name, const int reqGradeForSign, const int reqGra
 	AForm::checkGrade();
 }
 
-AForm::AForm(const AForm& obj) : _name(obj.getName()), _signed(false), _reqGradeForSign(obj.getReqGradeForSign()),
-								_reqGradeForExec(obj.getReqGradeForExec())
+AForm::AForm(const AForm& obj) : _name(obj.getName()), _signedStatus(obj.getSignatureStatus()),
+			_reqGradeForSign(obj.getReqGradeForSign()), _reqGradeForExec(obj.getReqGradeForExec())
 {
 	if (DEBUG == 1)
 		std::cout << "\033[0;93m" << "Copy AForm Constructor called (" << obj.getName()
@@ -46,9 +46,7 @@ AForm&	AForm::operator=(const AForm& rhs)
 {
 	if (this != &rhs)
 	{
-		this->~AForm();
-		new(this) AForm(rhs.getName(), rhs.getReqGradeForSign(), rhs.getReqGradeForExec());
-		this->_signed = rhs.getSignatureStatus();
+		this->_signedStatus = rhs.getSignatureStatus();
 	}
 	return (*this);
 }
@@ -63,7 +61,7 @@ const std::string&	AForm::getName(void) const
 
 bool	AForm::getSignatureStatus(void) const
 {
-	return (this->_signed);
+	return (this->_signedStatus);
 }
 
 int	AForm::getReqGradeForSign(void) const
@@ -76,16 +74,59 @@ int	AForm::getReqGradeForExec(void) const
 	return (this->_reqGradeForExec);
 }
 
+void	AForm::setSignatureStatus(bool status)
+{
+	this->_signedStatus = status;
+}
+
 void	AForm::beSigned(const Bureaucrat& bureaucrat)
 {
 	if (this->getSignatureStatus() == false)
 	{
 		if (bureaucrat.getGrade() <= this->getReqGradeForSign())
 		{
-			this->_signed = true;
+			this->_signedStatus = true;
 		}
 	}
 }
+
+bool	AForm::checkExecute(Bureaucrat const & executor) const
+{
+	bool res;
+
+	try
+	{
+		if (this->getSignatureStatus() == true)
+		{
+			if (executor.getGrade() <= this->getReqGradeForExec())
+				res = true;
+			else
+			{
+				res = false;
+				throw GradeTooLowException();
+			}
+		}
+		else
+		{
+			res = false;
+			throw UnsignedFormException();
+		}
+	}
+	catch (const UnsignedFormException& e)
+	{
+		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
+	}
+	catch (const GradeTooLowException& e)
+	{
+		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
+	}
+	catch (const std::exception& e)
+	{
+		std::cout << "\033[0;31m" << "Error: " << e.what() << "\033[0;39m" << std::endl;
+	}
+	return (res);
+}
+
 
 // Exceptions:
 /* ************************************************************************** */
@@ -100,43 +141,23 @@ const char* AForm::GradeTooLowException::what() const throw()
 	return ("The grade is too low!");
 }
 
+const char* AForm::UnsignedFormException::what() const throw()
+{
+	return ("The form is not signed!");
+}
+
 void	AForm::checkGrade(void)
 {
-	std::string	tempName = this->getName();
-	bool		tempSignedStatus = this->getSignatureStatus();
-	int			tempGradeSign = this->getReqGradeForSign();
-	int			tempGradeExec = this->getReqGradeForExec();
-
 	try
 	{
 		if (this->getReqGradeForSign() < MAX_GRADE)
-		{
-			this->~AForm();
-			new(this) AForm(tempName, 1, tempGradeExec);
-			this->_signed = tempSignedStatus;
 			throw GradeTooHighException();
-		}
 		else if (this->getReqGradeForSign() > MIN_GRADE)
-		{
-			this->~AForm();
-			new(this) AForm(tempName, 150, tempGradeExec);
-			this->_signed = tempSignedStatus;
 			throw GradeTooLowException();
-		}
 		if (this->getReqGradeForExec() < MAX_GRADE)
-		{
-			this->~AForm();
-			new(this) AForm(tempName, tempGradeSign, 1);
-			this->_signed = tempSignedStatus;
 			throw GradeTooHighException();
-		}
 		else if (this->getReqGradeForExec() > MIN_GRADE)
-		{
-			this->~AForm();
-			new(this) AForm(tempName, tempGradeSign, 150);
-			this->_signed = tempSignedStatus;
 			throw GradeTooLowException();
-		}
 	}
 	catch (const GradeTooHighException& e)
 	{
