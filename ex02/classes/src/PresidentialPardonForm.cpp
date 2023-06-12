@@ -6,7 +6,7 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 19:37:43 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/06/12 20:16:49 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/06/12 22:50:02 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,5 @@ std::string	PresidentialPardonForm::getTarget(void) const
 void	PresidentialPardonForm::execute(Bureaucrat const & executor) const
 {
 	if (this->checkExecute(executor) == true)
-		std::cout << "\033[0;96m" << "You have been pardoned by President Zaphod Beeblebrox." << "\033[0;39m" << std::endl;
+		std::cout << "\033[0;96m" << this->getTarget() << " pardoned by President Zaphod Beeblebrox." << "\033[0;39m" << std::endl;
 }

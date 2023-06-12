@@ -6,23 +6,14 @@
 /*   By: isojo-go <isojo-go@student.42urduliz.co    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/12 18:53:36 by isojo-go          #+#    #+#             */
-/*   Updated: 2023/06/12 19:53:47 by isojo-go         ###   ########.fr       */
+/*   Updated: 2023/06/12 22:38:09 by isojo-go         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PRESIDENTIALPARDONFORM_HPP
 	#define PRESIDENTIALPARDONFORM_HPP
 
-	#ifndef DEBUG
-		#define DEBUG 0
-	#endif
-
-	#include <string>
-	#include <iostream>
-	#include <exception>
 	#include "../inc/AForm.hpp"
-
-	class Bureaucrat;
 
 	class PresidentialPardonForm : public AForm
 	{
