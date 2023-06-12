@@ -119,6 +119,11 @@ void	Bureaucrat::signForm(AForm& form)
 
 }
 
+void	Bureaucrat::executeForm(AForm const & form)
+{
+	do something...
+}
+
 // Exceptions:
 /* ************************************************************************** */
 
